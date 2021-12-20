@@ -45,7 +45,13 @@ services:
 
   filebeat:
     image: elastic/filebeat:7.16.1
-    entrypoint: "filebeat -e -strict.perms=false"
+    #entrypoint: "filebeat -e -strict.perms=false"
+    entrypoint: ["/bin/sh","-c"]
+    command:
+    - |
+       filebeat -e -strict.perms=false
+       sleep 1
+       filebeat setup -e
     volumes:
       - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
       - ./nginx/log:/var/log/nginx:ro
